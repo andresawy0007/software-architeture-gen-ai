@@ -1,0 +1,51 @@
+@startuml WhatsApp Flight Change Sequence
+
+skinparam sequence {
+    ArrowColor DeepSkyBlue
+    ActorBorderColor DeepSkyBlue
+    LifeLineBorderColor blue
+    LifeLineBackgroundColor #A9DCDF
+    
+    ParticipantBorderColor DeepSkyBlue
+    ParticipantBackgroundColor DodgerBlue
+    ParticipantFontName Impact
+    ParticipantFontSize 17
+    ParticipantFontColor #A9DCDF
+}
+
+actor Usuario as user
+participant "WhatsApp API" as whatsapp
+participant "NLP Processing" as nlp
+participant "LangGraph" as langgraph
+participant "Retrieve\nReservation" as reservation
+participant "Fare Reshop" as fare
+participant "Payment" as payment
+
+== Inicio de la Interacción ==
+user -> whatsapp: 1. Envía mensaje (texto/voz)
+whatsapp -> nlp: 2. Procesa mensaje
+nlp -> langgraph: 3. Detecta intención
+
+== Consulta de Reserva ==
+langgraph -> reservation: 4. Solicita info de reserva
+reservation --> langgraph: 5. Devuelve detalles de reserva
+
+== Proceso de Cambio ==
+langgraph -> fare: 6. Solicita opciones de cambio
+fare --> langgraph: 7. Devuelve opciones y costos
+
+== Presentación de Opciones ==
+langgraph -> whatsapp: 8. Presenta opciones
+whatsapp -> user: 9. Muestra opciones disponibles
+
+== Selección y Pago ==
+user -> whatsapp: 10. Selecciona opción
+whatsapp -> langgraph: 11. Procesa selección
+langgraph -> payment: 12. Inicia pago
+payment --> langgraph: 13. Confirma pago
+
+== Confirmación Final ==
+langgraph -> whatsapp: 14. Confirma cambio
+whatsapp -> user: 15. Envía confirmación
+
+@enduml 

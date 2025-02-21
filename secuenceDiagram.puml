@@ -1,0 +1,36 @@
+@startuml
+title Cambio de Itinerario de Vuelo - Aerolínea
+
+actor Usuario
+participant "App de la Aerolínea" as App
+participant "Gestor de Cambios" as Gestor
+participant "Sistema de Reservas" as Reservas
+participant "Pasarela de Pagos" as Pagos
+
+Usuario -> App: Solicitar cambio de vuelo
+App -> Gestor: Validar disponibilidad
+Gestor -> Reservas: Consultar vuelos disponibles
+Reservas -> Gestor: Retorna vuelos disponibles
+
+Gestor -> App: Mostrar opciones de vuelo
+Usuario -> App: Selecciona nueva opción de vuelo
+App -> Gestor: Confirmar selección
+
+Gestor -> Reservas: Bloquear asiento en el nuevo vuelo
+Gestor -> Reservas: Calcular diferencia tarifaria
+Reservas -> Gestor: Retorna diferencia de tarifa
+
+Gestor -> App: Mostrar diferencia de tarifa
+Usuario -> App: Acepta y procede con el pago
+
+App -> Pagos: Procesar pago
+Pagos -> App: Confirmación de pago exitoso
+
+App -> Gestor: Confirmar cambio de itinerario
+Gestor -> Reservas: Confirmar nueva reserva y liberar la anterior
+Reservas -> Gestor: Confirmación de cambio exitoso
+Gestor -> App: Cambio confirmado
+
+App -> Usuario: Mostrar itinerario actualizado
+
+@enduml

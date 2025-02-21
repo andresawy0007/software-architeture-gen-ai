@@ -1,0 +1,115 @@
+@startuml WhatsApp Flight Change Entities
+
+skinparam class {
+    BackgroundColor LightBlue
+    ArrowColor DeepSkyBlue
+    BorderColor DarkBlue
+}
+
+skinparam stereotypeCBackgroundColor YellowGreen
+
+' Entidades principales
+class Reservation {
+    + reservationCode: String
+    + status: ReservationStatus
+    + bookingDate: DateTime
+    + passengers: List<Passenger>
+    + flights: List<Flight>
+    + totalAmount: Money
+    --
+    + validateReservation()
+    + calculateChangeFee()
+}
+
+class Flight {
+    + flightNumber: String
+    + origin: Airport
+    + destination: Airport
+    + departureTime: DateTime
+    + arrivalTime: DateTime
+    + cabin: CabinClass
+    --
+    + isAvailable()
+    + getPricing()
+}
+
+class Passenger {
+    + name: String
+    + documentType: DocumentType
+    + documentNumber: String
+    + contactInfo: ContactInfo
+    --
+    + isEligibleForChange()
+}
+
+class ChangeRequest {
+    + requestId: String
+    + originalReservation: Reservation
+    + newFlights: List<Flight>
+    + status: ChangeStatus
+    + priceDifference: Money
+    + changeFee: Money
+    --
+    + calculateTotalCost()
+    + process()
+}
+
+class Payment {
+    + transactionId: String
+    + amount: Money
+    + status: PaymentStatus
+    + paymentMethod: PaymentMethod
+    + timestamp: DateTime
+    --
+    + processPayment()
+    + validatePayment()
+}
+
+class WhatsAppSession {
+    + sessionId: String
+    + userPhoneNumber: String
+    + currentState: ConversationState
+    + context: Map<String, Object>
+    --
+    + updateState()
+    + storeContext()
+}
+
+' Enumeraciones
+enum ReservationStatus {
+    CONFIRMED
+    PENDING_CHANGE
+    CHANGED
+    CANCELLED
+}
+
+enum ChangeStatus {
+    REQUESTED
+    QUOTED
+    ACCEPTED
+    PAID
+    COMPLETED
+    CANCELLED
+}
+
+enum PaymentStatus {
+    PENDING
+    PROCESSING
+    COMPLETED
+    FAILED
+}
+
+' Relaciones
+Reservation "1" *-- "*" Passenger : contains
+Reservation "1" *-- "*" Flight : includes
+ChangeRequest "1" -- "1" Reservation : modifies
+ChangeRequest "1" -- "*" Flight : proposes
+ChangeRequest "1" -- "1" Payment : requires
+WhatsAppSession "1" -- "0..1" ChangeRequest : manages
+WhatsAppSession "1" -- "1" Passenger : interactsWith
+
+ReservationStatus -- Reservation
+ChangeStatus -- ChangeRequest
+PaymentStatus -- Payment
+
+@enduml 
