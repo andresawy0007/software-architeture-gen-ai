@@ -1,0 +1,35 @@
+{
+  "search": {
+    "title": "Check your Reservation",
+    "reservationCode": "Reservation Code",
+    "lastName": "Last Name",
+    "email": "Email",
+    "searchButton": "Search Reservation",
+    "validation": {
+      "requiredCode": "Reservation code is required",
+      "minCode": "Code must be at least {{min}} characters",
+      "maxCode": "Code must not exceed {{max}} characters",
+      "requiredField": "You must provide last name or email",
+      "invalidEmail": "Invalid email"
+    }
+  },
+  "details": {
+    "title": "Reservation Details",
+    "reservationCode": "Reservation Code",
+    "flightNumber": "Flight Number",
+    "departureDate": "Departure Date",
+    "returnDate": "Return Date",
+    "services": "Contracted Services",
+    "backButton": "Back to Search",
+    "status": {
+      "CONFIRMED": "Confirmed",
+      "CANCELLED": "Cancelled",
+      "PENDING": "Pending"
+    }
+  },
+  "errors": {
+    "notFound": "Reservation not found",
+    "default": "Error searching for reservation",
+    "network": "Connection error. Please check your internet connection"
+  }
+} 

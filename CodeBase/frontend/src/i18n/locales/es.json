@@ -1,0 +1,35 @@
+{
+  "search": {
+    "title": "Consulta tu Reserva",
+    "reservationCode": "Código de Reserva",
+    "lastName": "Apellido",
+    "email": "Email",
+    "searchButton": "Buscar Reserva",
+    "validation": {
+      "requiredCode": "El código de reserva es requerido",
+      "minCode": "El código debe tener al menos {{min}} caracteres",
+      "maxCode": "El código no debe exceder {{max}} caracteres",
+      "requiredField": "Debe proporcionar apellido o email",
+      "invalidEmail": "Email inválido"
+    }
+  },
+  "details": {
+    "title": "Detalles de la Reserva",
+    "reservationCode": "Código de Reserva",
+    "flightNumber": "Número de Vuelo",
+    "departureDate": "Fecha de Salida",
+    "returnDate": "Fecha de Retorno",
+    "services": "Servicios Contratados",
+    "backButton": "Volver a la Búsqueda",
+    "status": {
+      "CONFIRMED": "Confirmada",
+      "CANCELLED": "Cancelada",
+      "PENDING": "Pendiente"
+    }
+  },
+  "errors": {
+    "notFound": "Reserva no encontrada",
+    "default": "Error al buscar la reserva",
+    "network": "Error de conexión. Por favor, verifica tu conexión a internet"
+  }
+} 
