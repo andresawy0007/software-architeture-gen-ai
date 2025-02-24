@@ -1307,3 +1307,588 @@ Estos diagramas proporcionan diferentes vistas de la arquitectura:
 5. El diagrama de despliegue muestra la infraestructura cloud
 
 ¿Te gustaría que profundicemos en algún aspecto específico de estos diagramas o que generemos alguna vista adicional del sistema?
+
+
+### Realización de la primera historia de usuario
+
+US-01: Consulta de Reserva Actual 
+Descripción 
+
+Como pasajero 
+
+Quiero ingresar mi código de reserva y apellido 
+
+Para poder consultar los detalles de mi reserva actual 
+
+Contexto del Negocio 
+
+Es el punto de entrada principal para cualquier gestión de cambios de itinerario 
+La validación correcta protege la privacidad de los datos del pasajero 
+Debe funcionar tanto para usuarios registrados como no registrados 
+Precondiciones 
+
+La reserva debe existir en el sistema 
+La reserva no debe estar cancelada o expirada 
+El sistema de reservas debe estar operativo 
+La conexión con el sistema central de reservas debe estar activa 
+Datos de Entrada 
+
+Código de reserva (6 caracteres alfanuméricos) 
+Apellido del pasajero principal 
+Email (opcional, para envío de información) 
+Flujo Principal 
+
+El pasajero accede a la pantalla de consulta de reserva 
+Ingresa el código de reserva 
+Ingresa su apellido 
+El sistema valida los datos ingresados 
+El sistema muestra los detalles de la reserva 
+Datos a Mostrar 
+
+Información del vuelo: 
+Número de vuelo 
+Origen y destino 
+Fecha y hora de salida/llegada 
+Terminal y puerta (si están disponibles) 
+Información de la reserva: 
+Estado actual 
+Clase de servicio 
+Restricciones de la tarifa 
+Número de pasajeros 
+Servicios adicionales contratados 
+Información de contacto registrada 
+Reglas de Negocio 
+
+El código de reserva debe tener exactamente 6 caracteres 
+El apellido debe coincidir exactamente con el registrado 
+Mostrar error si la combinación no es válida 
+Bloquear acceso después de 3 intentos fallidos 
+La sesión expira después de 15 minutos de inactividad 
+Flujos Alternativos 
+
+Reserva no encontrada: 
+Mostrar mensaje de error claro 
+Sugerir verificar los datos 
+Ofrecer contacto con servicio al cliente 
+Sistema no disponible: 
+Mostrar mensaje de error amigable 
+Sugerir intentar más tarde 
+Proporcionar número de contacto alternativo 
+Criterios de Aceptación 
+
+Validación de Datos: 
+Validar formato del código de reserva 
+Validar que el apellido solo contenga caracteres permitidos 
+Mostrar mensajes de error específicos para cada validación 
+Seguridad: 
+Implementar protección contra ataques de fuerza bruta 
+Registrar todos los intentos de acceso 
+Encriptar datos sensibles en tránsito 
+Rendimiento: 
+Tiempo de respuesta < 2 segundos 
+Soportar 1000 consultas simultáneas 
+Disponibilidad 99.9% 
+Interfaz: 
+Diseño responsive 
+Accesible en dispositivos móviles 
+Cumplir con estándares de UX de la aerolínea 
+Mockups/Enlaces 
+
+Link al diseño en Figma: [pendiente] 
+Link a la documentación API: [pendiente] 
+Dependencias Técnicas 
+
+Integración con sistema central de reservas 
+Servicio de autenticación 
+Sistema de logging y monitoreo 
+API de notificaciones para errores críticos 
+Consideraciones de Testing 
+
+Pruebas unitarias para validaciones 
+Pruebas de integración con sistema de reservas 
+Pruebas de carga para concurrencia 
+Pruebas de seguridad 
+Pruebas de usabilidad 
+Métricas de Éxito 
+
+Tasa de éxito en consultas > 98% 
+Tiempo promedio de consulta < 2 segundos 
+Tasa de errores < 1% 
+Satisfacción del usuario > 4.5/5 
+Notas Adicionales 
+
+Considerar futura integración con sistemas de login social 
+Preparar para soporte multiidioma 
+Planear capacidad de búsqueda por email en futuras versiones 
+
+### Tickets de Jira
+Crea la primera historia de este sistema:
+
+Backend: Implementación de API para Consulta de Reservas 
+ID del Ticket: BK-001 
+
+Título del Ticket: Implementar API para consultar detalles de una reserva 
+
+Descripción: Se debe desarrollar un endpoint en el backend que permita consultar la información de una reserva mediante el código de reserva y apellido o correo electrónico. La API deberá validar la existencia de la reserva y devolver los datos correspondientes. 
+
+Criterios de Aceptación: 
+
+El endpoint debe aceptar código de reserva y apellido/email como parámetros. 
+Si la reserva existe, debe devolver un JSON con los detalles de la reserva. 
+Si la reserva no existe, debe devolver un mensaje de error adecuado. 
+El endpoint debe responder en menos de 3 segundos. 
+La API debe estar protegida con autenticación y HTTPS. 
+Prioridad: Alta 
+
+Estimación de esfuerzo: 8 horas 
+
+Tareas Técnicas: 
+
+Crear el endpoint GET /reservas/{codigoReserva} en el servicio de reservas. 
+Implementar lógica de búsqueda en la base de datos. 
+Validar existencia de la reserva y su estado. 
+Aplicar formato de respuesta JSON. 
+Manejar errores y mensajes adecuados. 
+Implementar logs para trazabilidad. 
+Notas: La API debe integrarse con el servicio de autenticación para verificar permisos de acceso. 
+
+Backend: Seguridad y Validaciones 
+ID del Ticket: BK-002 
+
+Título del Ticket: Implementar validaciones y seguridad en la API de consulta de reserva 
+
+Descripción: Se deben agregar validaciones de entrada, autenticación y protección contra ataques como inyección SQL y fuerza bruta. 
+
+Criterios de Aceptación: 
+
+Los parámetros de entrada deben ser validados antes de la consulta en la base de datos. 
+Implementación de autenticación con JWT o API Key. 
+Prevención contra ataques de fuerza bruta (rate limiting). 
+Manejo de errores con códigos HTTP adecuados. 
+Prioridad: Alta 
+
+Estimación de esfuerzo: 5 horas 
+
+Tareas Técnicas: 
+
+Validar código de reserva y apellido/email con expresiones regulares. 
+Implementar middleware de autenticación con JWT/API Key. 
+Configurar rate limiting con un máximo de intentos por minuto. 
+Configurar logs de intentos fallidos para auditoría. 
+Notas: Esta tarea debe completarse antes de exponer la API en producción. 
+
+ 
+
+Base de Datos: Optimización de Consulta de Reserva 
+ID del Ticket: DB-001 
+
+Título del Ticket: Optimizar consulta de reservas en la base de datos 
+
+Descripción: Se debe optimizar la consulta a la base de datos para garantizar un tiempo de respuesta menor a 3 segundos. 
+
+Criterios de Aceptación: 
+
+La consulta debe realizarse en menos de 3 segundos en condiciones normales. 
+Se deben agregar índices en los campos clave (código de reserva, apellido/email). 
+La consulta debe devolver solo los datos necesarios para la visualización. 
+Prioridad: Media 
+
+Estimación de esfuerzo: 4 horas 
+
+Tareas Técnicas: 
+
+Agregar índices en la base de datos en las columnas codigo_reserva y email_pasajero. 
+Optimizar la consulta eliminando columnas innecesarias. 
+Implementar caché en Redis para consultas repetidas. 
+Notas: Se recomienda revisar métricas de rendimiento tras la implementación. 
+
+ 
+
+Frontend: Diseño e Implementación del Formulario de Consulta 
+ 
+
+ID del Ticket: FE-001 
+
+Título del Ticket: Crear formulario de consulta de reserva en frontend 
+
+Descripción: Se debe desarrollar un formulario en la web donde el usuario pueda ingresar su código de reserva y apellido/email para consultar los detalles de su reserva. 
+
+Criterios de Aceptación: 
+
+El formulario debe permitir ingresar código de reserva y apellido/email. 
+Debe haber validación en el frontend antes de enviar la solicitud. 
+Debe mostrar un mensaje de error si la reserva no existe. 
+El resultado debe mostrarse de manera clara y legible. 
+Prioridad: Alta 
+
+Estimación de esfuerzo: 6 horas 
+
+Tareas Técnicas: 
+
+Diseñar el formulario con React/Vue/Angular. 
+Implementar validaciones en tiempo real. 
+Conectar el formulario con la API de consulta de reservas. 
+Manejar errores y mostrar mensajes adecuados. 
+Notas: Debe ser responsive y accesible en dispositivos móviles. 
+
+ 
+
+Frontend: Mostrar Detalles de la Reserva 
+ID del Ticket: FE-002 
+
+Título del Ticket: Implementar visualización de detalles de la reserva 
+
+Descripción: Una vez consultada la reserva, se debe mostrar la información de manera estructurada y legible. 
+
+Criterios de Aceptación: 
+
+Se deben mostrar los datos principales de la reserva (número de vuelo, fechas, estado, servicios contratados). 
+La interfaz debe ser responsive. 
+Debe haber una opción para regresar a la pantalla de búsqueda. 
+Si hay un error, debe mostrarse un mensaje claro. 
+Prioridad: Media 
+
+Estimación de esfuerzo: 4 horas 
+
+Tareas Técnicas: 
+
+Diseñar la interfaz para mostrar los detalles de la reserva. 
+Implementar formato de visualización atractivo y claro. 
+Agregar botón de regreso a la pantalla de consulta. 
+Notas: Se recomienda seguir los lineamientos de UI/UX del proyecto. 
+
+ 
+
+Pruebas: Testing de la Funcionalidad Completa 
+ID del Ticket: QA-001 
+
+Título del Ticket: Realizar pruebas de consulta de reserva en backend y frontend 
+
+Descripción: Se deben realizar pruebas unitarias y de integración para validar que la consulta de reserva funciona correctamente. 
+
+Criterios de Aceptación: 
+
+Todas las pruebas unitarias deben pasar con éxito. 
+Se deben cubrir casos de éxito y error en la consulta de reserva. 
+Se debe probar el rendimiento de la API. 
+Prioridad: Alta 
+
+Estimación de esfuerzo: 5 horas 
+
+Tareas Técnicas: 
+
+Escribir pruebas unitarias para la API de consulta de reserva. 
+Escribir pruebas de integración entre frontend y backend. 
+Realizar pruebas de carga en la API. 
+Notas: Se recomienda automatizar las pruebas en CI/CD. 
+
+Resumen de Esfuerzo Total 
+
+Backend (API + Seguridad): 13 horas 
+Base de Datos: 4 horas 
+Frontend (UI + Conexión con API): 10 horas 
+Pruebas: 5 horas 
+Total estimado: 32 horas (~4 días de trabajo para un equipo de 2-3 personas). 
+
+### Resultado
+
+Vamos a agregar internacionalización (i18n) y estados de carga (loading states) a nuestra aplicación.
+
+Primero, instalemos las dependencias necesarias:
+
+```diff:frontend/package.json
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.14",
+    "@mui/material": "^5.11.14",
+    "axios": "^1.3.4",
+    "date-fns": "^2.29.3",
+    "formik": "^2.2.9",
++   "i18next": "^22.4.13",
++   "i18next-browser-languagedetector": "^7.0.1",
++   "react-i18next": "^12.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "react-transition-group": "^4.4.5",
+    "yup": "^1.0.2"
+  }
+```
+
+Creemos los archivos de internacionalización:
+
+```javascript:frontend/src/i18n/index.js
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import es from './locales/es.json';
+import en from './locales/en.json';
+
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources: {
+      es: {
+        translation: es
+      },
+      en: {
+        translation: en
+      }
+    },
+    fallbackLng: 'es',
+    interpolation: {
+      escapeValue: false
+    }
+  });
+
+export default i18n;
+```
+
+```json:frontend/src/i18n/locales/es.json
+{
+  "search": {
+    "title": "Consulta tu Reserva",
+    "reservationCode": "Código de Reserva",
+    "lastName": "Apellido",
+    "email": "Email",
+    "searchButton": "Buscar Reserva",
+    "validation": {
+      "requiredCode": "El código de reserva es requerido",
+      "minCode": "El código debe tener al menos {{min}} caracteres",
+      "maxCode": "El código no debe exceder {{max}} caracteres",
+      "requiredField": "Debe proporcionar apellido o email",
+      "invalidEmail": "Email inválido"
+    }
+  },
+  "details": {
+    "title": "Detalles de la Reserva",
+    "reservationCode": "Código de Reserva",
+    "flightNumber": "Número de Vuelo",
+    "departureDate": "Fecha de Salida",
+    "returnDate": "Fecha de Retorno",
+    "services": "Servicios Contratados",
+    "backButton": "Volver a la Búsqueda",
+    "status": {
+      "CONFIRMED": "Confirmada",
+      "CANCELLED": "Cancelada",
+      "PENDING": "Pendiente"
+    }
+  },
+  "errors": {
+    "notFound": "Reserva no encontrada",
+    "default": "Error al buscar la reserva",
+    "network": "Error de conexión. Por favor, verifica tu conexión a internet"
+  }
+}
+```
+
+```json:frontend/src/i18n/locales/en.json
+{
+  "search": {
+    "title": "Check your Reservation",
+    "reservationCode": "Reservation Code",
+    "lastName": "Last Name",
+    "email": "Email",
+    "searchButton": "Search Reservation",
+    "validation": {
+      "requiredCode": "Reservation code is required",
+      "minCode": "Code must be at least {{min}} characters",
+      "maxCode": "Code must not exceed {{max}} characters",
+      "requiredField": "You must provide last name or email",
+      "invalidEmail": "Invalid email"
+    }
+  },
+  "details": {
+    "title": "Reservation Details",
+    "reservationCode": "Reservation Code",
+    "flightNumber": "Flight Number",
+    "departureDate": "Departure Date",
+    "returnDate": "Return Date",
+    "services": "Contracted Services",
+    "backButton": "Back to Search",
+    "status": {
+      "CONFIRMED": "Confirmed",
+      "CANCELLED": "Cancelled",
+      "PENDING": "Pending"
+    }
+  },
+  "errors": {
+    "notFound": "Reservation not found",
+    "default": "Error searching for reservation",
+    "network": "Connection error. Please check your internet connection"
+  }
+}
+```
+
+Creemos un componente de carga:
+
+```javascript:frontend/src/components/common/LoadingOverlay.jsx
+import React from 'react';
+import { Backdrop, CircularProgress, Typography, Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+
+const LoadingOverlay = ({ open, message }) => {
+  const { t } = useTranslation();
+
+  return (
+    <Backdrop
+      sx={{
+        color: '#fff',
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        flexDirection: 'column'
+      }}
+      open={open}
+    >
+      <CircularProgress color="inherit" />
+      {message && (
+        <Box mt={2}>
+          <Typography variant="h6">{message}</Typography>
+        </Box>
+      )}
+    </Backdrop>
+  );
+};
+
+export default LoadingOverlay;
+```
+
+Actualicemos el componente ReservationSearch para incluir i18n y estados de carga:
+
+```diff:frontend/src/components/ReservationSearch/ReservationSearch.jsx
+  import { useFormik } from 'formik';
+  import * as Yup from 'yup';
++ import { useTranslation } from 'react-i18next';
+  import { searchReservation } from '../../services/reservationService';
++ import LoadingOverlay from '../common/LoadingOverlay';
+
+- const validationSchema = Yup.object({
+-   // ... existing validation
+- });
+
+  const ReservationSearch = ({ onReservationFound }) => {
++   const { t } = useTranslation();
+    const [error, setError] = useState(null);
++   const [isLoading, setIsLoading] = useState(false);
+
++   const validationSchema = Yup.object({
++     reservationCode: Yup.string()
++       .required(t('search.validation.requiredCode'))
++       .min(6, t('search.validation.minCode', { min: 6 }))
++       .max(10, t('search.validation.maxCode', { max: 10 })),
++     lastName: Yup.string()
++       .when('email', {
++         is: (email) => !email || email.length === 0,
++         then: () => Yup.string().required(t('search.validation.requiredField')),
++       }),
++     email: Yup.string()
++       .email(t('search.validation.invalidEmail'))
++       .when('lastName', {
++         is: (lastName) => !lastName || lastName.length === 0,
++         then: () => Yup.string().required(t('search.validation.requiredField')),
++       }),
++   });
+
+    const formik = useFormik({
+      // ... existing formik config
+      onSubmit: async (values) => {
+        try {
+          setError(null);
++         setIsLoading(true);
+          const reservation = await searchReservation(values);
+          onReservationFound(reservation);
+        } catch (err) {
+-         setError(err.response?.data?.message || 'Error al buscar la reserva');
++         setError(
++           err.response?.data?.message || 
++           (err.message === 'Network Error' ? t('errors.network') : t('errors.default'))
++         );
+        } finally {
++         setIsLoading(false);
+        }
+      },
+    });
+
+    return (
+      <Container maxWidth="sm">
++       <LoadingOverlay open={isLoading} message={t('search.loading')} />
+        <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+          <Typography variant="h5" component="h1" gutterBottom>
+-           Consulta tu Reserva
++           {t('search.title')}
+          </Typography>
+          
+          <form onSubmit={formik.handleSubmit}>
+            {/* Update all text fields with translations */}
+          </form>
+        </Paper>
+      </Container>
+    );
+  };
+```
+
+Actualicemos también el componente ReservationDetails:
+
+```diff:frontend/src/components/ReservationDetails/ReservationDetails.jsx
+  import { format } from 'date-fns';
+  import { es } from 'date-fns/locale';
++ import { useTranslation } from 'react-i18next';
+
+  const StatusChip = ({ status }) => {
++   const { t } = useTranslation();
+    const statusConfig = {
+-     CONFIRMED: { color: 'success', label: 'Confirmada' },
+-     CANCELLED: { color: 'error', label: 'Cancelada' },
+-     PENDING: { color: 'warning', label: 'Pendiente' }
++     CONFIRMED: { color: 'success', label: t('details.status.CONFIRMED') },
++     CANCELLED: { color: 'error', label: t('details.status.CANCELLED') },
++     PENDING: { color: 'warning', label: t('details.status.PENDING') }
+    };
+
+    // ... rest of the component
+  };
+
+  const ReservationDetails = ({ reservation, onBack }) => {
++   const { t, i18n } = useTranslation();
++   const currentLocale = i18n.language.startsWith('es') ? es : enUS;
+
+    return (
+      <Container maxWidth="md">
+        <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
+            <Typography variant="h5" component="h1">
+-             Detalles de la Reserva
++             {t('details.title')}
+            </Typography>
+            <StatusChip status={reservation.status} />
+          </Box>
+
+          {/* Update all text fields with translations */}
+          
+          <Typography variant="body1" gutterBottom>
+-           {format(new Date(reservation.departureDate), 'PPP', { locale: es })}
++           {format(new Date(reservation.departureDate), 'PPP', { locale: currentLocale })}
+          </Typography>
+
+          {/* ... rest of the component */}
+        </Paper>
+      </Container>
+    );
+  };
+```
+
+Finalmente, actualicemos el App.jsx para inicializar i18n:
+
+```diff:frontend/src/App.jsx
+  import CssBaseline from '@mui/material/CssBaseline';
++ import './i18n';  // Import i18n configuration
+  import ReservationSearch from './components/ReservationSearch/ReservationSearch';
+```
+
+¿Te gustaría que agreguemos más características como:
+1. Persistencia del estado en localStorage
+2. Manejo de errores más detallado
+3. Skeleton screens para la carga inicial
+4. Selector de idioma?
+
